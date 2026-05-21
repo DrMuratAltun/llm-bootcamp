@@ -1,0 +1,223 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { modules } from '../data/curriculum';
+
+const base = import.meta.env.BASE_URL;
+
+const sections = [
+  { label: 'TEMEL',                              color: 'primary',   modules: modules.filter(m => m.section === 'TEMEL'),                                  hours: 12 },
+  { label: 'EKOSISTEM & RAG',                    color: 'secondary', modules: modules.filter(m => m.section === 'EKOSISTEM' || m.section === 'RAG'),       hours: 21 },
+  { label: 'FINE-TUNING & GENAI DEVOPS',         color: 'accent',    modules: modules.filter(m => m.section === 'FINE-TUNING' || m.section === 'DEVOPS'),  hours: 9 },
+];
+
+const siteUrl = 'https://drmurataltun.github.io/llm-bootcamp';
+
+// JSON-LD: ItemList (6 modül) — SEO için
+const homeJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'LLM Tabanlı Uygulama Geliştirme Atölyesi — 6 Modüllük Müfredat',
+  description: 'ML deployment, Hugging Face ekosistemi, lokal LLM, RAG mimarisi, PEFT/LoRA fine-tuning ve GenAI DevOps konularını kapsayan 42 saatlik ileri seviye atölye.',
+  numberOfItems: modules.length,
+  itemListElement: modules.map(m => ({
+    '@type': 'ListItem',
+    position: m.id,
+    url: `${siteUrl}/modul/${m.slug}/`,
+    name: `Modül ${m.id}: ${m.title}`,
+  })),
+};
+
+const colorMap: Record<string, string> = {
+  accent:    'border-accent bg-accent/5 hover:bg-accent/10',
+  secondary: 'border-secondary bg-secondary/5 hover:bg-secondary/10',
+  primary:   'border-primary bg-primary/5 hover:bg-primary/10',
+};
+const badgeMap: Record<string, string> = {
+  accent:    'bg-accent text-white',
+  secondary: 'bg-secondary text-white',
+  primary:   'bg-primary text-white',
+};
+const textMap: Record<string, string> = {
+  accent:    'text-accent',
+  secondary: 'text-secondary',
+  primary:   'text-primary',
+};
+
+// Modül -> bölüm renk eşlemesi
+function sectionColor(section: string): string {
+  if (section === 'TEMEL') return 'primary';
+  if (section === 'EKOSISTEM' || section === 'RAG') return 'secondary';
+  return 'accent'; // FINE-TUNING, DEVOPS
+}
+---
+
+<Layout title="Program Özeti">
+  <!-- JSON-LD: ItemList schema (6 modül SEO için) -->
+  <script type="application/ld+json" set:html={JSON.stringify(homeJsonLd)} />
+
+  <!-- HERO -->
+  <div class="rounded-2xl bg-dark text-white p-8 mb-8 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-25" style="background: radial-gradient(circle at 70% 50%, #EC4899 0%, transparent 60%), radial-gradient(circle at 20% 80%, #6D28D9 0%, transparent 55%)"></div>
+    <div class="relative">
+      <div class="flex items-start justify-between flex-wrap gap-4">
+        <div>
+          <p class="text-secondary text-sm font-medium uppercase tracking-widest mb-2">BTK Akademi · İleri Seviye · 6-17 Temmuz 2026</p>
+          <h1 class="text-3xl font-bold mb-2">LLM Tabanlı Uygulama<br/>Geliştirme Atölyesi</h1>
+          <p class="text-gray-300 text-sm">Dr. Murat Altun · Hugging Face · LangChain · Ollama · RAG · Fine-tuning</p>
+        </div>
+        <div class="flex gap-4 text-center">
+          <div class="bg-white/10 rounded-xl px-5 py-3">
+            <div class="text-3xl font-bold text-secondary">42</div>
+            <div class="text-xs text-gray-300 mt-1">Toplam Saat</div>
+          </div>
+          <div class="bg-white/10 rounded-xl px-5 py-3">
+            <div class="text-3xl font-bold text-accent">6</div>
+            <div class="text-xs text-gray-300 mt-1">Gün · 6 Modül</div>
+          </div>
+          <div class="bg-white/10 rounded-xl px-5 py-3">
+            <div class="text-3xl font-bold text-purple-300">3</div>
+            <div class="text-xs text-gray-300 mt-1">Ana Bölüm</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capstone duyurusu -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 text-sm">
+          <span class="text-secondary">▪</span> Capstone: RAG + Fine-tuned model + Docker deploy
+        </div>
+        <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 text-sm">
+          <span class="text-accent">▪</span> Günlük 7 saat uygulamalı atölye
+        </div>
+        <div class="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 text-sm">
+          <span class="text-purple-300">▪</span> İleri seviye Python ve ML ön koşulu
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BÖLÜMLER -->
+  {sections.map(section => (
+    <div class="mb-10">
+      <div class={`flex items-center gap-3 mb-4`}>
+        <span class={`inline-block w-1 h-6 rounded-full ${badgeMap[section.color]}`}></span>
+        <h2 class={`text-sm font-bold uppercase tracking-widest ${textMap[section.color]}`}>{section.label}</h2>
+        <span class="text-xs text-mid bg-border/60 rounded-full px-2 py-0.5">{section.hours} saat</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        {section.modules.map(m => {
+          const c = sectionColor(m.section);
+          return (
+            <a
+              href={`${base}modul/${m.slug}`}
+              class={`group block rounded-xl border-l-4 p-4 transition-all ${colorMap[c]} border border-border`}
+            >
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                  <span class={`text-xs font-bold px-2 py-0.5 rounded-full ${badgeMap[c]}`}>MODÜL {m.id}</span>
+                  <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-warmBg text-mid border border-border">{m.days}</span>
+                </div>
+                <span class="text-xs text-mid">{m.hours} saat</span>
+              </div>
+              <h3 class="font-semibold text-dark text-sm leading-snug mb-1 group-hover:text-primary transition-colors">{m.title}</h3>
+              <p class="text-xs text-mid mb-3">{m.subtitle}</p>
+              <div class="flex flex-wrap gap-1">
+                {m.libraries.slice(0, 4).map(lib => (
+                  <span class="text-[10px] bg-white/70 border border-border rounded px-1.5 py-0.5 text-mid font-mono">{lib}</span>
+                ))}
+                {m.libraries.length > 4 && (
+                  <span class="text-[10px] text-mid">+{m.libraries.length - 4}</span>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  ))}
+
+  <!-- PLATFORMLAR VE PROGRAMLAR -->
+  <div class="mt-10 mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="inline-block w-1 h-6 rounded-full bg-primary"></span>
+      <h2 class="text-sm font-bold uppercase tracking-widest text-primary">Platformlar ve Programlar</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {[
+        { name: 'Hugging Face',  emoji: '🤗', desc: 'Models, Datasets, Spaces — açık kaynak LLM ekosisteminin merkezi', url: 'https://huggingface.co/' },
+        { name: 'Ollama',        emoji: '🦙', desc: 'Lokal LLM çalıştırma için en kolay yol — REST API + Modelfile', url: 'https://ollama.com/' },
+        { name: 'LM Studio',     emoji: '🖥️', desc: 'GUI ile lokal LLM yönetimi, OpenAI-uyumlu endpoint', url: 'https://lmstudio.ai/' },
+        { name: 'LangChain',     emoji: '🔗', desc: 'LLM uygulama framework\'ü — LCEL ile zincirler', url: 'https://www.langchain.com/' },
+        { name: 'LangGraph',     emoji: '🕸️', desc: 'State-machine tabanlı multi-step / multi-agent akışlar', url: 'https://langchain-ai.github.io/langgraph/' },
+        { name: 'ChromaDB',      emoji: '🗄️', desc: 'Açık kaynak embeddings ve vector store', url: 'https://www.trychroma.com/' },
+        { name: 'Google AI Studio', emoji: '✨', desc: 'Gemini ile prompt management ve A/B testing', url: 'https://aistudio.google.com/' },
+        { name: 'Antigravity',   emoji: '🌌', desc: 'Agent-driven IDE — plan/execute development', url: 'https://antigravity.google/' },
+        { name: 'Google Colab',  emoji: '🟡', desc: 'Ücretsiz T4/P100 GPU — fine-tuning ve eğitim için', url: 'https://colab.research.google.com/' },
+        { name: 'Docker',        emoji: '🐳', desc: 'Container ile deployment ve reproducible environment', url: 'https://www.docker.com/' },
+        { name: 'VS Code',       emoji: '🟦', desc: 'Yerel geliştirme için modern IDE', url: 'https://code.visualstudio.com/' },
+        { name: 'GitHub',        emoji: '⚫', desc: 'Kod barındırma, sürüm kontrolü, portföy', url: 'https://github.com/' },
+      ].map(p => (
+        <a href={p.url} target="_blank" rel="noopener" class="group flex items-start gap-3 bg-white rounded-xl border border-border p-4 hover:border-primary/40 hover:shadow-sm transition-all">
+          <span class="text-2xl shrink-0">{p.emoji}</span>
+          <div>
+            <p class="font-semibold text-dark text-sm group-hover:text-primary transition-colors">{p.name}</p>
+            <p class="text-xs text-mid mt-1 leading-snug">{p.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Kütüphaneler -->
+  <div class="mt-8 rounded-xl border border-border bg-white p-6">
+    <h2 class="font-bold text-dark mb-4">Kullanılan Kütüphaneler</h2>
+    <div class="flex flex-wrap gap-2">
+      {['transformers', 'datasets', 'accelerate', 'tokenizers', 'bitsandbytes',
+        'peft', 'trl', 'unsloth', 'axolotl',
+        'langchain', 'langgraph', 'langchain-community',
+        'chromadb', 'qdrant-client', 'sentence-transformers', 'rank-bm25',
+        'ragas', 'pypdf', 'unstructured',
+        'ollama', 'llama-cpp-python', 'gguf',
+        'fastapi', 'pydantic', 'uvicorn', 'gunicorn',
+        'gradio', 'streamlit',
+        'google-generativeai', 'openai', 'anthropic', 'instructor',
+        'guardrails-ai', 'nemoguardrails', 'presidio-analyzer',
+        'wandb', 'tensorboard', 'docker'].map(tech => (
+        <span class="text-xs bg-warmBg border border-border rounded-full px-3 py-1 text-mid font-medium font-mono">{tech}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ÖN KOŞULLAR -->
+  <div class="mt-8 rounded-xl border border-secondary/30 bg-secondary/5 p-6">
+    <h2 class="font-bold text-dark mb-3 flex items-center gap-2">
+      <span class="text-secondary">⚠️</span> Ön Koşullar (İleri Seviye)
+    </h2>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-mid">
+      <li class="flex items-start gap-2"><span class="text-secondary">▸</span> Python orta-ileri (OOP, dekoratörler)</li>
+      <li class="flex items-start gap-2"><span class="text-secondary">▸</span> Temel ML/DL kavramları (train/test, overfitting, NN)</li>
+      <li class="flex items-start gap-2"><span class="text-secondary">▸</span> Temel doğrusal cebir ve olasılık</li>
+      <li class="flex items-start gap-2"><span class="text-secondary">▸</span> Git ve REST API / JSON kavramları</li>
+      <li class="flex items-start gap-2"><span class="text-secondary">▸</span> İngilizce teknik belge okuma</li>
+      <li class="flex items-start gap-2"><span class="text-secondary">▸</span> Donanım: 16 GB+ RAM, tercihen 8 GB+ VRAM GPU veya Colab Pro / Kaggle</li>
+    </ul>
+  </div>
+
+  <!-- Capstone Bilgisi -->
+  <div class="mt-8 rounded-2xl bg-gradient-to-br from-primary via-secondary to-accent p-[1px]">
+    <div class="bg-white rounded-2xl p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl shrink-0">🎯</div>
+        <div>
+          <h2 class="font-bold text-dark mb-2">Capstone Projesi (Modül 6)</h2>
+          <p class="text-sm text-mid leading-relaxed">
+            Eğitimin sonunda her katılımcı, öğrendiklerini birleştirip <strong class="text-dark">production-grade bir LLM uygulaması</strong> teslim eder:
+            kurumsal RAG + (opsiyonel) lokal fine-tuned model + Docker deployment.
+            Final sunum, kısa demo ve teknik rapor değerlendirmenin parçasıdır.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

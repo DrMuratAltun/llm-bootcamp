@@ -1,0 +1,28 @@
+# Node
+node_modules/
+dist/
+.astro/
+*.log
+.DS_Store
+
+# Env
+.env
+.env.local
+
+# Build artifacts
+web/dist/
+web/.astro/
+web/node_modules/
+
+# Eğitim içerikleri — Drive'da tutulur, repo'ya commit EDİLMEZ
+notebooks/
+sunumlar/
+web/public/sunumlar/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE local state
+.claude/
+.remember/

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Google arama motoru
+User-agent: Googlebot
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# Yandex (Türkiye için önemli)
+User-agent: YandexBot
+Allow: /
+
+# LLM Tabanlı Uygulama Geliştirme Atölyesi — Dr. Murat Altun
+Sitemap: https://drmurataltun.github.io/llm-bootcamp/sitemap.xml
