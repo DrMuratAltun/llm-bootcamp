@@ -14,13 +14,14 @@ web/dist/
 web/.astro/
 web/node_modules/
 
-# Eğitim içerikleri — Drive'da tutulur, repo'ya commit EDİLMEZ
-notebooks/
-sunumlar/
+# Eğitim çıktıları — Drive'da tutulur, repo'ya commit EDİLMEZ
+# (sunumlar/ ve notebooks/ klasörleri repo'da var, içindeki gen scriptleri & README'ler izlenir)
+*.pptx
+*.pdf
+*.ipynb
 web/public/sunumlar/
 
 # OS
-.DS_Store
 Thumbs.db
 
 # IDE local state
