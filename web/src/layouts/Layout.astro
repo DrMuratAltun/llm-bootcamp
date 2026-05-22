@@ -12,8 +12,11 @@ const { title, description, activeModuleId, canonical } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const siteUrl = 'https://drmurataltun.github.io/llm-bootcamp';
 
-const metaTitle = `${title} — LLM Tabanlı Uygulama Geliştirme Atölyesi · Dr. Murat Altun`;
-const metaDesc = description ?? 'Dr. Murat Altun ile 42 saatlik ileri seviye LLM tabanlı uygulama geliştirme atölyesi. ML deployment, Hugging Face ekosistemi, lokal LLM, RAG mimarisi, PEFT/LoRA fine-tuning ve GenAI DevOps konuları.';
+// Title 50-60 kar hedefi: ana sayfa kısa, modül sayfaları zaten içerikli
+const metaTitle = title.includes('Modül')
+  ? `${title} · Dr. Murat Altun`            // Modül sayfaları (zaten uzun başlık)
+  : `LLM Tabanlı Uygulama Geliştirme · Dr. Murat Altun`;  // Ana sayfa, eğitmen
+const metaDesc = description ?? 'BTK Akademi · 42 saatlik ileri seviye LLM atölyesi · RAG, fine-tuning, Hugging Face, Ollama, LangChain, FastAPI, Docker · Temmuz 2026.';
 const canonicalUrl = canonical ?? siteUrl;
 
 // SEO için 4 JSON-LD: Course + EducationalOrganization + Person + WebSite
