@@ -119,5 +119,5 @@ Bir modülü güncellemek/genişletmek için:
 
 ## 🤝 İletişim
 
-- **Dr. Murat:** 0539 257 82 06 · emurataltun@gmail.com
+- **Dr. Murat:** 0507 750 19 82 · emurataltun@gmail.com
 - **AI İşbirliği:** `~/.claude/CLAUDE.md` "AI İşbirliği Protokolü" geçerli (Claude = Maker, Gemini = Reviewer, Dr. Murat = karar).

@@ -86,7 +86,7 @@ Bu repo Dr. Murat Altun'a ait özel materyaller içerir. Sunum ve notebook'lar *
 
 ## İletişim
 
-🏢 Kurumsal eğitim: **0539 257 82 06**
+🏢 Kurumsal eğitim: **0507 750 19 82**
 📧 [drmurataltun.github.io](https://drmurataltun.github.io/)
 🐙 [GitHub: DrMuratAltun](https://github.com/DrMuratAltun)
 🎓 [yapayzekaokulum.com](https://www.yapayzekaokulum.com/)
